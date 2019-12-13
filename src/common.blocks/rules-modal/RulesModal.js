@@ -28,7 +28,7 @@ class RulesModal extends LitElement {
 		return css`
 			.rules {
 				position: absolute;
-				color: black;
+				color: ${colors.darkText};
 				background-color: white;
 				overflow: hidden;
 				bottom: 0;
