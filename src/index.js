@@ -1,2 +1,4 @@
 import "./styles.scss";
-import "./common.blocks/base/app-root";
+import "./common.blocks/app-root/AppRoot";
+import "./common.blocks/title-box/TitleBox";
+import "./common.blocks/rules-modal/RulesModal";
