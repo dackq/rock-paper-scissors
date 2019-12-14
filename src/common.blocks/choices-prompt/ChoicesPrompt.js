@@ -24,11 +24,11 @@ customElements.define(
 
 		handleChoice(e) {
 			this.registerChoice(e.target.dataset.shape);
-			this.choices = {
-				paper: "hidden",
-				scissors: "hidden",
-				rock: "hidden"
-			};
+			let newChoices = {};
+			for (let choice in this.choices) {
+				newChoices[choice] = "hidden";
+			}
+			this.choices = newChoices;
 			this.choices[this.playerChoice] = "";
 		}
 
@@ -37,11 +37,11 @@ customElements.define(
 		}
 
 		reset() {
-			this.choices = {
-				paper: "",
-				scissors: "",
-				rock: ""
-			};
+			let newChoices = {};
+			for (let choice in this.choices) {
+				newChoices[choice] = "";
+			}
+			this.choices = newChoices;
 		}
 
 		static get styles() {
