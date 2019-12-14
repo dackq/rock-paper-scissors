@@ -9,30 +9,66 @@ customElements.define(
 		static get properties() {
 			return {
 				playerChoice: { type: String },
-				choices: { type: Object },
-				activeStage: { type: String },
-				choiceStage: { type: String }
+				choices: { type: Object }
 			};
 		}
 
 		constructor() {
 			super();
 			this.choices = {
-				paper,
-				scissors,
-				rock
+				paper: "",
+				rock: "",
+				scissors: ""
 			};
-			this.choiceStage = html`
+		}
+
+		handleChoice(e) {
+			this.registerChoice(e.target.dataset.shape);
+			this.choices = {
+				paper: "hidden",
+				scissors: "hidden",
+				rock: "hidden"
+			};
+			this.choices[this.playerChoice] = "";
+		}
+
+		registerChoice(choice) {
+			this.playerChoice = choice;
+		}
+
+		reset() {
+			this.choices = {
+				paper: "",
+				scissors: "",
+				rock: ""
+			};
+		}
+
+		static get styles() {
+			return css`
+				.hidden {
+					opacity: 0;
+					height: 0;
+					overflow: hidden;
+					background-color: red;
+				}
+			`;
+		}
+
+		render() {
+			return html`
 				<div>
 					<choice-button
 						@click="${this.handleChoice}"
 						data-shape="paper"
+						state="${this.choices.paper}"
 					>
 						<img src="${paper}" alt="Paper" data-shape="paper" />
 					</choice-button>
 					<choice-button
 						@click="${this.handleChoice}"
 						data-shape="scissors"
+						state="${this.choices.scissors}"
 					>
 						<img
 							src="${scissors}"
@@ -43,39 +79,13 @@ customElements.define(
 					<choice-button
 						@click="${this.handleChoice}"
 						data-shape="rock"
+						state="${this.choices.rock}"
 					>
 						<img src="${rock}" alt="Rock" data-shape="rock" />
 					</choice-button>
+					<button @click="${this.reset}">Reset</button>
 				</div>
 			`;
-			this.activeStage = this.choiceStage;
-		}
-
-		handleChoice(e) {
-			this.registerChoice(e.target.dataset.shape);
-			this.activeStage = html`
-				<div>
-					<choice-button>
-						<img
-							src="${this.choices[this.playerChoice]}"
-							alt="${this.playerChoice}"
-						/>
-					</choice-button>
-					<button @click="${this.reset}"></button>
-				</div>
-			`;
-		}
-
-		registerChoice(choice) {
-			this.playerChoice = choice;
-		}
-
-		reset() {
-			this.activeStage = this.choiceStage;
-		}
-
-		render() {
-			return this.activeStage;
 		}
 	}
 );
