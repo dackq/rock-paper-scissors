@@ -46,6 +46,7 @@ customElements.define(
 					<button @click="${this.changeScore}">
 						Increase Score
 					</button>
+					<choices-prompt></choices-prompt>
 					<rules-modal></rules-modal>
 				</div>
 			`;

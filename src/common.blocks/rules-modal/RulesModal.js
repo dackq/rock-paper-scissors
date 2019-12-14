@@ -49,6 +49,7 @@ class RulesModal extends LitElement {
 				padding: 0.5rem 2.2rem;
 				margin: auto;
 				background-color: transparent;
+				cursor: pointer;
 			}
 			.button_rules {
 				color: white;
