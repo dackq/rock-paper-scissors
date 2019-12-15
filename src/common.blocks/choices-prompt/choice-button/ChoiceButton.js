@@ -4,9 +4,7 @@ customElements.define(
 	"choice-button",
 	class ChoiceButton extends LitElement {
 		static get properties() {
-			return {
-				state: { type: String }
-			};
+			return {};
 		}
 
 		constructor() {
@@ -25,18 +23,13 @@ customElements.define(
 					border-radius: 50%;
 					background-color: white;
 					cursor: pointer;
-					transition: 0.5s;
-				}
-				.hidden {
-					opacity: 0;
-					visibility: hidden;
 				}
 			`;
 		}
 
 		render() {
 			return html`
-				<div class="choice-button ${this.state}">
+				<div class="choice-button">
 					<slot></slot>
 				</div>
 			`;

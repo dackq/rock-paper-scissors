@@ -84,7 +84,8 @@ customElements.define(
 				.scissors {
 					position: absolute;
 					top: 10%;
-					right: 0;
+					left: 100%;
+					transform: translateX(-100%);
 				}
 				.center {
 					position: absolute;
@@ -106,7 +107,6 @@ customElements.define(
 							.position} ${this.choices.paper.state}"
 						@click="${this.handleChoice}"
 						data-shape="paper"
-						state="${this.choices.paper.state}"
 					>
 						<img src="${paper}" alt="Paper" data-shape="paper" />
 					</choice-button>
@@ -115,7 +115,6 @@ customElements.define(
 							.position} ${this.choices.scissors.state}"
 						@click="${this.handleChoice}"
 						data-shape="scissors"
-						state="${this.choices.scissors.state}"
 					>
 						<img
 							src="${scissors}"
@@ -128,7 +127,6 @@ customElements.define(
 							.position} ${this.choices.rock.state}"
 						@click="${this.handleChoice}"
 						data-shape="rock"
-						state="${this.choices.rock.state}"
 					>
 						<img src="${rock}" alt="Rock" data-shape="rock" />
 					</choice-button>
