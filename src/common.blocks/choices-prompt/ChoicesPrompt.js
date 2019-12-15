@@ -96,6 +96,12 @@ customElements.define(
 					opacity: 0;
 					visibility: hidden;
 				}
+				.image {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
 			`;
 		}
 
@@ -108,7 +114,12 @@ customElements.define(
 						@click="${this.handleChoice}"
 						data-shape="paper"
 					>
-						<img src="${paper}" alt="Paper" data-shape="paper" />
+						<img
+							class="image"
+							src="${paper}"
+							alt="Paper"
+							data-shape="paper"
+						/>
 					</choice-button>
 					<choice-button
 						class="choice-button ${this.choices.scissors
@@ -117,6 +128,7 @@ customElements.define(
 						data-shape="scissors"
 					>
 						<img
+							class="image"
 							src="${scissors}"
 							alt="Scissors"
 							data-shape="scissors"
@@ -128,7 +140,12 @@ customElements.define(
 						@click="${this.handleChoice}"
 						data-shape="rock"
 					>
-						<img src="${rock}" alt="Rock" data-shape="rock" />
+						<img
+							class="image"
+							src="${rock}"
+							alt="Rock"
+							data-shape="rock"
+						/>
 					</choice-button>
 					<button @click="${this.reset}">Reset</button>
 				</div>
