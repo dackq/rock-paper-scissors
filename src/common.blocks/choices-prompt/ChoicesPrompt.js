@@ -9,8 +9,7 @@ customElements.define(
 		static get properties() {
 			return {
 				playerChoice: { type: String },
-				choices: { type: Object },
-				center: { type: String }
+				choices: { type: Object }
 			};
 		}
 
@@ -33,7 +32,7 @@ customElements.define(
 		}
 
 		handleChoice(e) {
-			this.registerChoice(e.target.dataset.shape);
+			this.playerChoice = e.target.dataset.shape;
 			let newChoices = {};
 			for (let choice in this.choices) {
 				newChoices[choice] = {};
@@ -41,14 +40,10 @@ customElements.define(
 				newChoices[choice].position = "center";
 			}
 			this.choices = newChoices;
-			this.choices[this.playerChoice].state = "";
+			this.choices[this.playerChoice].state = "focus";
 		}
 
-		registerChoice(choice) {
-			this.playerChoice = choice;
-		}
-
-		reset() {
+		resetChoices() {
 			let newChoices = {};
 			for (let choice in this.choices) {
 				newChoices[choice] = {};
@@ -63,7 +58,9 @@ customElements.define(
 				.choice-prompt {
 					position: relative;
 					width: 100%;
-					height: 60vh;
+					max-width: 30rem;
+					height: 69.333%;
+					margin: 13.333vh auto;
 					overflow: hidden;
 				}
 				.choice-button {
@@ -72,35 +69,33 @@ customElements.define(
 				}
 				.paper {
 					position: absolute;
-					top: 10%;
+					top: 0;
 					left: 0;
 				}
 				.rock {
 					position: absolute;
-					top: 50%;
+					top: 9.375rem;
 					left: 50%;
 					transform: translateX(-50%);
 				}
 				.scissors {
 					position: absolute;
-					top: 10%;
+					top: 0;
 					left: 100%;
 					transform: translateX(-100%);
 				}
 				.center {
 					position: absolute;
-					top: 10%;
-					left: 0;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+				.focus {
+					z-index: 10;
 				}
 				.hidden {
 					opacity: 0;
 					visibility: hidden;
-				}
-				.image {
-					position: absolute;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%);
 				}
 			`;
 		}
@@ -113,41 +108,22 @@ customElements.define(
 							.position} ${this.choices.paper.state}"
 						@click="${this.handleChoice}"
 						data-shape="paper"
-					>
-						<img
-							class="image"
-							src="${paper}"
-							alt="Paper"
-							data-shape="paper"
-						/>
-					</choice-button>
+						picture="${paper}"
+					></choice-button>
 					<choice-button
 						class="choice-button ${this.choices.scissors
 							.position} ${this.choices.scissors.state}"
 						@click="${this.handleChoice}"
 						data-shape="scissors"
-					>
-						<img
-							class="image"
-							src="${scissors}"
-							alt="Scissors"
-							data-shape="scissors"
-						/>
-					</choice-button>
+						picture="${scissors}"
+					></choice-button>
 					<choice-button
 						class="choice-button ${this.choices.rock
 							.position} ${this.choices.rock.state}"
 						@click="${this.handleChoice}"
 						data-shape="rock"
-					>
-						<img
-							class="image"
-							src="${rock}"
-							alt="Rock"
-							data-shape="rock"
-						/>
-					</choice-button>
-					<button @click="${this.reset}">Reset</button>
+						picture="${rock}"
+					></choice-button>
 				</div>
 			`;
 		}

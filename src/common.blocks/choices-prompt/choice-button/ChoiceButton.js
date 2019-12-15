@@ -5,7 +5,8 @@ customElements.define(
 	class ChoiceButton extends LitElement {
 		static get properties() {
 			return {
-				shape: { type: String, attribute: "data-shape" }
+				shape: { type: String, attribute: "data-shape" },
+				picture: { type: String }
 			};
 		}
 
@@ -58,6 +59,12 @@ customElements.define(
 						hsl(230, 89%, 62%)
 					);
 				}
+				.image {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
 			`;
 		}
 
@@ -68,7 +75,11 @@ customElements.define(
 						.shape}"
 				>
 					<div class="choice-button">
-						<slot class="image"></slot>
+						<img
+							class="image"
+							src="${this.picture}"
+							alt="${this.shape}"
+						/>
 					</div>
 				</div>
 			`;
