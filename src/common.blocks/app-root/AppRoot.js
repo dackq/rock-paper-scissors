@@ -40,12 +40,6 @@ customElements.define(
 			return html`
 				<div class="app-root">
 					<title-box score="${this.score}"></title-box>
-					<button @click="${this.resetScore}">
-						Reset Score
-					</button>
-					<button @click="${this.changeScore}">
-						Increase Score
-					</button>
 					<choices-prompt></choices-prompt>
 					<rules-modal></rules-modal>
 				</div>
