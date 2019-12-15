@@ -58,10 +58,14 @@ customElements.define(
 				.choice-prompt {
 					position: relative;
 					width: 100%;
-					max-width: 30rem;
-					height: 69.333%;
-					margin: 13.333vh auto;
+					max-width: 20rem;
+					margin: 6.25rem auto 8.75rem auto;
 					overflow: hidden;
+				}
+				.choice-prompt::before {
+					content: "";
+					float: left;
+					padding-top: 86.6025%;
 				}
 				.choice-button {
 					transition: 0.5s;
@@ -74,9 +78,9 @@ customElements.define(
 				}
 				.rock {
 					position: absolute;
-					top: 9.375rem;
+					top: 100%;
 					left: 50%;
-					transform: translateX(-50%);
+					transform: translate(-50%, -100%);
 				}
 				.scissors {
 					position: absolute;
