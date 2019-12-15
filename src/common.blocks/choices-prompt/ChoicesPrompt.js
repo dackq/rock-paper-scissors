@@ -9,16 +9,26 @@ customElements.define(
 		static get properties() {
 			return {
 				playerChoice: { type: String },
-				choices: { type: Object }
+				choices: { type: Object },
+				center: { type: String }
 			};
 		}
 
 		constructor() {
 			super();
 			this.choices = {
-				paper: "",
-				rock: "",
-				scissors: ""
+				paper: {
+					state: "",
+					position: "paper"
+				},
+				rock: {
+					state: "",
+					position: "rock"
+				},
+				scissors: {
+					state: "",
+					position: "scissors"
+				}
 			};
 		}
 
@@ -26,10 +36,12 @@ customElements.define(
 			this.registerChoice(e.target.dataset.shape);
 			let newChoices = {};
 			for (let choice in this.choices) {
-				newChoices[choice] = "hidden";
+				newChoices[choice] = {};
+				newChoices[choice].state = "hidden";
+				newChoices[choice].position = "center";
 			}
 			this.choices = newChoices;
-			this.choices[this.playerChoice] = "";
+			this.choices[this.playerChoice].state = "";
 		}
 
 		registerChoice(choice) {
@@ -39,36 +51,71 @@ customElements.define(
 		reset() {
 			let newChoices = {};
 			for (let choice in this.choices) {
-				newChoices[choice] = "";
+				newChoices[choice] = {};
+				newChoices[choice].state = "";
+				newChoices[choice].position = `${choice}`;
 			}
 			this.choices = newChoices;
 		}
 
 		static get styles() {
 			return css`
+				.choice-prompt {
+					position: relative;
+					width: 100%;
+					height: 60vh;
+					overflow: hidden;
+				}
+				.choice-button {
+					transition: 0.5s;
+					display: inline-block;
+				}
+				.paper {
+					position: absolute;
+					top: 10%;
+					left: 0;
+				}
+				.rock {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translateX(-50%);
+				}
+				.scissors {
+					position: absolute;
+					top: 10%;
+					right: 0;
+				}
+				.center {
+					position: absolute;
+					top: 10%;
+					left: 0;
+				}
 				.hidden {
 					opacity: 0;
-					height: 0;
-					overflow: hidden;
-					background-color: red;
+					visibility: hidden;
 				}
 			`;
 		}
 
 		render() {
 			return html`
-				<div>
+				<div class="choice-prompt">
 					<choice-button
+						class="choice-button ${this.choices.paper
+							.position} ${this.choices.paper.state}"
 						@click="${this.handleChoice}"
 						data-shape="paper"
-						state="${this.choices.paper}"
+						state="${this.choices.paper.state}"
 					>
 						<img src="${paper}" alt="Paper" data-shape="paper" />
 					</choice-button>
 					<choice-button
+						class="choice-button ${this.choices.scissors
+							.position} ${this.choices.scissors.state}"
 						@click="${this.handleChoice}"
 						data-shape="scissors"
-						state="${this.choices.scissors}"
+						state="${this.choices.scissors.state}"
 					>
 						<img
 							src="${scissors}"
@@ -77,9 +124,11 @@ customElements.define(
 						/>
 					</choice-button>
 					<choice-button
+						class="choice-button ${this.choices.rock
+							.position} ${this.choices.rock.state}"
 						@click="${this.handleChoice}"
 						data-shape="rock"
-						state="${this.choices.rock}"
+						state="${this.choices.rock.state}"
 					>
 						<img src="${rock}" alt="Rock" data-shape="rock" />
 					</choice-button>

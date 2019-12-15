@@ -25,11 +25,11 @@ customElements.define(
 					border-radius: 50%;
 					background-color: white;
 					cursor: pointer;
+					transition: 0.5s;
 				}
 				.hidden {
 					opacity: 0;
-					height: 0;
-					overflow: hidden;
+					visibility: hidden;
 				}
 			`;
 		}
