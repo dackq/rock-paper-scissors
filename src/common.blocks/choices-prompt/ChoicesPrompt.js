@@ -13,9 +13,11 @@ customElements.define(
 			return {
 				playerChoice: { type: String },
 				houseChoice: { type: String },
+				houseChoiceRender: { type: String },
 				choices: { type: Object },
 				triangleState: { type: String },
-				houseChoiceHiddenState: { type: String }
+				houseChoiceBlockHiddenState: { type: String },
+				houseChoiceRevealState: { type: String }
 			};
 		}
 
@@ -24,28 +26,32 @@ customElements.define(
 			this.choices = {
 				paper: {
 					state: "",
-					position: "paper"
+					position: "paper",
+					image: paper
 				},
 				rock: {
 					state: "",
-					position: "rock"
+					position: "rock",
+					image: rock
 				},
 				scissors: {
 					state: "",
-					position: "scissors"
+					position: "scissors",
+					image: scissors
 				}
 			};
 			this.triangleState = "";
-			this.houseChoiceHiddenState = "hidden";
+			this.houseChoiceBlockHiddenState = "hidden";
+			this.houseChoiceRevealState = "hidden";
 		}
 
 		handleChoice(event) {
 			this.registerPlayerChoice(event);
-			this.registerHouseChoice();
-			console.log(this.houseChoice);
+			const houseChoice = this.registerHouseChoice();
 			this.closeChoices();
 			setTimeout(() => {
-				this.revealHouseChoice();
+				this.revealHouseChoice(houseChoice);
+				console.log(this.judgeWinner());
 			}, 350);
 		}
 
@@ -56,7 +62,15 @@ customElements.define(
 		registerHouseChoice() {
 			const choices = ["rock", "paper", "scissors"];
 			const randomNumberOneToThree = Math.floor(Math.random() * 3);
-			this.houseChoice = choices[randomNumberOneToThree];
+			const choice = choices[randomNumberOneToThree];
+			this.houseChoice = choice;
+			this.houseChoiceRender = html`
+				<choice-button
+					class="choice-button"
+					data-shape="${choice}"
+					picture="${this.choices[choice].image}"
+				></choice-button>
+			`;
 		}
 
 		closeChoices() {
@@ -71,8 +85,11 @@ customElements.define(
 			this.choices[this.playerChoice].state = "focus";
 		}
 
-		revealHouseChoice() {
-			this.houseChoiceHiddenState = "";
+		revealHouseChoice(choice) {
+			this.houseChoiceBlockHiddenState = "";
+			setTimeout(() => {
+				this.houseChoiceRevealState = "";
+			}, 700);
 		}
 
 		resetChoices() {
@@ -83,8 +100,30 @@ customElements.define(
 				newChoices[choice].position = `${choice}`;
 			}
 			this.choices = newChoices;
-			this.houseChoiceHiddenState = "hidden";
+			this.houseChoiceBlockHiddenState = "hidden";
+			this.houseChoiceRevealState = "hidden";
 			this.triangleState = "";
+		}
+
+		judgeWinner() {
+			const values = {
+				paper: 0,
+				scissors: 1,
+				rock: 2
+			};
+
+			const difference =
+				values[this.playerChoice] - values[this.houseChoice];
+
+			if (difference > 0) {
+				return "Player Won";
+			} else if (difference === -2) {
+				return "Player Won";
+			} else if (difference === 0) {
+				return "Draw";
+			} else {
+				return "Player lost";
+			}
 		}
 
 		static get styles() {
@@ -158,6 +197,16 @@ customElements.define(
 					right: 0;
 				}
 				.house {
+					width: 8.125rem;
+					height: 8.125rem;
+					z-index: 0;
+					border-radius: 50%;
+					transition: 0.5s;
+					position: absolute;
+					top: 0;
+					right: 0;
+				}
+				.house__inner-circle {
 					width: 6.25rem;
 					height: 6.25rem;
 					z-index: 0;
@@ -166,7 +215,7 @@ customElements.define(
 					transition: 0.5s;
 					position: absolute;
 					top: 0.9375rem;
-					right: 0;
+					right: 0.9375rem;
 				}
 				.house__label {
 					position: absolute;
@@ -210,10 +259,16 @@ customElements.define(
 						data-shape="rock"
 						picture="${rock}"
 					></choice-button>
-					<div class="house ${this.houseChoiceHiddenState}">
-						${this.houseChoice}
+					<div class="house ${this.houseChoiceBlockHiddenState}">
+						<div class="house__inner-circle"></div>
+						<div
+							class=" choice-button ${this
+								.houseChoiceRevealState}"
+						>
+							${this.houseChoiceRender}
+						</div>
 					</div>
-					<p class="house__label ${this.houseChoiceHiddenState}">
+					<p class="house__label ${this.houseChoiceBlockHiddenState}">
 						The House Picked
 					</p>
 					<div
