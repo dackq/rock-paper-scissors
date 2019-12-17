@@ -15,9 +15,10 @@ customElements.define(
 				houseChoice: { type: String },
 				houseChoiceRender: { type: String },
 				choices: { type: Object },
-				triangleState: { type: String },
-				houseChoiceBlockHiddenState: { type: String },
-				houseChoiceRevealState: { type: String }
+				triangleRevealState: { type: String },
+				houseChoiceBlockRevealState: { type: String },
+				houseChoiceRevealState: { type: String },
+				clickHandler: { attribute: false }
 			};
 		}
 
@@ -40,12 +41,14 @@ customElements.define(
 					image: scissors
 				}
 			};
-			this.triangleState = "";
-			this.houseChoiceBlockHiddenState = "hidden";
+			this.triangleRevealState = "";
+			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
+			this.clickHandler = this.handleChoice;
 		}
 
 		handleChoice(event) {
+			this.clickHandler = "";
 			this.registerPlayerChoice(event);
 			const houseChoice = this.registerHouseChoice();
 			this.closeChoices();
@@ -81,12 +84,12 @@ customElements.define(
 				newChoices[choice].position = "center";
 			}
 			this.choices = newChoices;
-			this.triangleState = "hidden";
+			this.triangleRevealState = "hidden";
 			this.choices[this.playerChoice].state = "focus";
 		}
 
 		revealHouseChoice(choice) {
-			this.houseChoiceBlockHiddenState = "";
+			this.houseChoiceBlockRevealState = "";
 			setTimeout(() => {
 				this.houseChoiceRevealState = "";
 			}, 700);
@@ -100,9 +103,9 @@ customElements.define(
 				newChoices[choice].position = `${choice}`;
 			}
 			this.choices = newChoices;
-			this.houseChoiceBlockHiddenState = "hidden";
+			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
-			this.triangleState = "";
+			this.triangleRevealState = "";
 		}
 
 		judgeWinner() {
@@ -239,7 +242,7 @@ customElements.define(
 					></choice-button>
 					<div
 						class="choice-button__connection choice-button__connection_top ${this
-							.triangleState}"
+							.triangleRevealState}"
 					></div>
 					<choice-button
 						class="choice-button ${this.choices.scissors
@@ -250,7 +253,7 @@ customElements.define(
 					></choice-button>
 					<div
 						class="choice-button__connection choice-button__connection_left ${this
-							.triangleState}"
+							.triangleRevealState}"
 					></div>
 					<choice-button
 						class="choice-button ${this.choices.rock
@@ -259,7 +262,7 @@ customElements.define(
 						data-shape="rock"
 						picture="${rock}"
 					></choice-button>
-					<div class="house ${this.houseChoiceBlockHiddenState}">
+					<div class="house ${this.houseChoiceBlockRevealState}">
 						<div class="house__inner-circle"></div>
 						<div
 							class=" choice-button ${this
@@ -268,12 +271,12 @@ customElements.define(
 							${this.houseChoiceRender}
 						</div>
 					</div>
-					<p class="house__label ${this.houseChoiceBlockHiddenState}">
+					<p class="house__label ${this.houseChoiceBlockRevealState}">
 						The House Picked
 					</p>
 					<div
 						class="choice-button__connection choice-button__connection_right ${this
-							.triangleState}"
+							.triangleRevealState}"
 					></div>
 				</div>
 			`;
