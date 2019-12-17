@@ -13,7 +13,8 @@ customElements.define(
 			return {
 				playerChoice: { type: String },
 				choices: { type: Object },
-				triangleState: { type: String }
+				triangleState: { type: String },
+				houseChoiceState: { type: String }
 			};
 		}
 
@@ -34,10 +35,22 @@ customElements.define(
 				}
 			};
 			this.triangleState = "";
+			this.houseChoiceState = "house_hidden";
 		}
 
-		handleChoice(e) {
-			this.playerChoice = e.target.dataset.shape;
+		handleChoice(event) {
+			this.registerPlayerChoice(event);
+			this.closeChoices();
+			setTimeout(() => {
+				this.revealHouseChoice();
+			}, 350);
+		}
+
+		registerPlayerChoice(event) {
+			this.playerChoice = event.target.dataset.shape;
+		}
+
+		closeChoices() {
 			let newChoices = {};
 			for (let choice in this.choices) {
 				newChoices[choice] = {};
@@ -49,6 +62,10 @@ customElements.define(
 			this.choices[this.playerChoice].state = "focus";
 		}
 
+		revealHouseChoice() {
+			this.houseChoiceState = "";
+		}
+
 		resetChoices() {
 			let newChoices = {};
 			for (let choice in this.choices) {
@@ -57,6 +74,7 @@ customElements.define(
 				newChoices[choice].position = `${choice}`;
 			}
 			this.choices = newChoices;
+			this.houseChoiceState = "house_hidden";
 			this.triangleState = "";
 		}
 
@@ -136,11 +154,21 @@ customElements.define(
 					z-index: 0;
 					background-color: #16243e;
 					border-radius: 50%;
-				}
-				.house_position {
+					transition: 0.5s;
 					position: absolute;
 					top: 0.9375rem;
-					right: 0.9375rem;
+					right: 0;
+				}
+				.house__label {
+					position: absolute;
+					right: 0.75rem;
+					top: 7rem;
+					color: white;
+					transition: 0.5s;
+				}
+				.house_hidden {
+					opacity: 0;
+					visibility: hidden;
 				}
 			`;
 		}
@@ -177,7 +205,10 @@ customElements.define(
 						data-shape="rock"
 						picture="${rock}"
 					></choice-button>
-					<div class="house house_position"></div>
+					<div class="house ${this.houseChoiceState}"></div>
+					<p class="house__label ${this.houseChoiceState}">
+						The House Picked
+					</p>
 					<div
 						class="choice-button__connection choice-button__connection_right ${this
 							.triangleState}"
