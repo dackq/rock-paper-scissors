@@ -3,7 +3,7 @@ import scissors from "../../img/icon-scissors.svg";
 import paper from "../../img/icon-paper.svg";
 import rock from "../../img/icon-rock.svg";
 
-// height = height of an equilateral triangle sqrt(3)/2 * side length
+// height of an equilateral triangle sqrt(3)/2 * side length
 const elementHeight = 100 * (Math.sqrt(3) / 2);
 
 customElements.define(
@@ -17,8 +17,7 @@ customElements.define(
 				choices: { type: Object },
 				triangleRevealState: { type: String },
 				houseChoiceBlockRevealState: { type: String },
-				houseChoiceRevealState: { type: String },
-				clickHandler: { attribute: false }
+				houseChoiceRevealState: { type: String }
 			};
 		}
 
@@ -44,17 +43,21 @@ customElements.define(
 			this.triangleRevealState = "";
 			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
-			this.clickHandler = this.handleChoice;
+			this.gameOutcome = "";
 		}
 
 		handleChoice(event) {
-			this.clickHandler = "";
 			this.registerPlayerChoice(event);
-			const houseChoice = this.registerHouseChoice();
+			this.registerHouseChoice();
 			this.closeChoices();
 			setTimeout(() => {
-				this.revealHouseChoice(houseChoice);
-				console.log(this.judgeWinner());
+				this.revealHouseChoiceBlock();
+				setTimeout(() => {
+					this.revealHouseChoice();
+					setTimeout(() => {
+						this.gameOutcome = this.judgeWinner();
+					}, 500);
+				}, 700);
 			}, 350);
 		}
 
@@ -88,11 +91,12 @@ customElements.define(
 			this.choices[this.playerChoice].state = "focus";
 		}
 
-		revealHouseChoice(choice) {
+		revealHouseChoiceBlock() {
 			this.houseChoiceBlockRevealState = "";
-			setTimeout(() => {
-				this.houseChoiceRevealState = "";
-			}, 700);
+		}
+
+		revealHouseChoice() {
+			this.houseChoiceRevealState = "";
 		}
 
 		resetChoices() {
@@ -114,19 +118,31 @@ customElements.define(
 				scissors: 1,
 				rock: 2
 			};
+			let increaseEvent = new CustomEvent("score-increased");
 
 			const difference =
 				values[this.playerChoice] - values[this.houseChoice];
 
-			if (difference > 0) {
-				return "Player Won";
+			if (difference > 0 && difference !== 2) {
+				this.dispatchEvent(increaseEvent);
+				this.dispatchOutcomeChangedEvent("Player Won");
 			} else if (difference === -2) {
-				return "Player Won";
+				this.dispatchEvent(increaseEvent);
+				this.dispatchOutcomeChangedEvent("Player Won");
 			} else if (difference === 0) {
-				return "Draw";
+				this.dispatchOutcomeChangedEvent("Draw");
 			} else {
-				return "Player lost";
+				this.dispatchOutcomeChangedEvent("Player Lost");
 			}
+		}
+
+		dispatchOutcomeChangedEvent(outcome) {
+			let event = new CustomEvent("outcome-changed", {
+				detail: {
+					outcome
+				}
+			});
+			this.dispatchEvent(event);
 		}
 
 		static get styles() {
@@ -135,7 +151,7 @@ customElements.define(
 					position: relative;
 					width: 100%;
 					max-width: 30rem;
-					margin: 6.25rem auto 8.75rem auto;
+					margin: 6.25rem auto 0 auto;
 					overflow: hidden;
 				}
 				.choice-prompt::before {
@@ -279,6 +295,7 @@ customElements.define(
 							.triangleRevealState}"
 					></div>
 				</div>
+				<button @click="${this.resetChoices}">Reset</button>
 			`;
 		}
 	}
