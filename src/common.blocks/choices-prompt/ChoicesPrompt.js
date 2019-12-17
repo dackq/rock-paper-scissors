@@ -12,9 +12,10 @@ customElements.define(
 		static get properties() {
 			return {
 				playerChoice: { type: String },
+				houseChoice: { type: String },
 				choices: { type: Object },
 				triangleState: { type: String },
-				houseChoiceState: { type: String }
+				houseChoiceHiddenState: { type: String }
 			};
 		}
 
@@ -35,11 +36,13 @@ customElements.define(
 				}
 			};
 			this.triangleState = "";
-			this.houseChoiceState = "house_hidden";
+			this.houseChoiceHiddenState = "hidden";
 		}
 
 		handleChoice(event) {
 			this.registerPlayerChoice(event);
+			this.registerHouseChoice();
+			console.log(this.houseChoice);
 			this.closeChoices();
 			setTimeout(() => {
 				this.revealHouseChoice();
@@ -48,6 +51,12 @@ customElements.define(
 
 		registerPlayerChoice(event) {
 			this.playerChoice = event.target.dataset.shape;
+		}
+
+		registerHouseChoice() {
+			const choices = ["rock", "paper", "scissors"];
+			const randomNumberOneToThree = Math.floor(Math.random() * 3);
+			this.houseChoice = choices[randomNumberOneToThree];
 		}
 
 		closeChoices() {
@@ -63,7 +72,7 @@ customElements.define(
 		}
 
 		revealHouseChoice() {
-			this.houseChoiceState = "";
+			this.houseChoiceHiddenState = "";
 		}
 
 		resetChoices() {
@@ -74,7 +83,7 @@ customElements.define(
 				newChoices[choice].position = `${choice}`;
 			}
 			this.choices = newChoices;
-			this.houseChoiceState = "house_hidden";
+			this.houseChoiceHiddenState = "hidden";
 			this.triangleState = "";
 		}
 
@@ -166,10 +175,6 @@ customElements.define(
 					color: white;
 					transition: 0.5s;
 				}
-				.house_hidden {
-					opacity: 0;
-					visibility: hidden;
-				}
 			`;
 		}
 
@@ -205,8 +210,10 @@ customElements.define(
 						data-shape="rock"
 						picture="${rock}"
 					></choice-button>
-					<div class="house ${this.houseChoiceState}"></div>
-					<p class="house__label ${this.houseChoiceState}">
+					<div class="house ${this.houseChoiceHiddenState}">
+						${this.houseChoice}
+					</div>
+					<p class="house__label ${this.houseChoiceHiddenState}">
 						The House Picked
 					</p>
 					<div
