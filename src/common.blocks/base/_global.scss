@@ -9,7 +9,11 @@ html {
 
 body {
 	font-family: "Barlow Semi Condensed", sans-serif;
-	background: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+	background: radial-gradient(
+		circle at top right,
+		hsl(214, 47%, 23%),
+		hsl(237, 49%, 15%)
+	);
 	background-color: hsl(237, 49%, 15%);
 	font-size: 16px;
 }
