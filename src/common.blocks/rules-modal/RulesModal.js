@@ -37,6 +37,7 @@ class RulesModal extends LitElement {
 				width: 100%;
 				transition: height 0.5s;
 				text-align: center;
+				z-index: 20;
 			}
 			.rules__content {
 				height: 85vh;
