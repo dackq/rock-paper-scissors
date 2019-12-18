@@ -19,7 +19,8 @@ customElements.define(
 				images: { type: Object },
 				triangleRevealState: { type: String },
 				houseChoiceBlockRevealState: { type: String },
-				houseChoiceRevealState: { type: String }
+				houseChoiceRevealState: { type: String },
+				disableClick: { type: Boolean }
 			};
 		}
 
@@ -52,17 +53,20 @@ customElements.define(
 		}
 
 		handleChoice(event) {
-			this.registerPlayerChoice(event);
-			this.registerHouseChoice();
-			this.closeChoices();
-			this.choicePromptHeight = "choice-prompt_smaller-height";
-			this.revealHouseChoiceBlock();
-			setTimeout(() => {
-				this.revealHouseChoice();
+			if (!this.disableClick) {
+				this.disableClick = true;
+				this.registerPlayerChoice(event);
+				this.registerHouseChoice();
+				this.closeChoices();
+				this.choicePromptHeight = "choice-prompt_smaller-height";
+				this.revealHouseChoiceBlock();
 				setTimeout(() => {
-					this.gameOutcome = this.judgeWinner();
-				}, 500);
-			}, 700);
+					this.revealHouseChoice();
+					setTimeout(() => {
+						this.gameOutcome = this.judgeWinner();
+					}, 500);
+				}, 700);
+			}
 		}
 
 		registerPlayerChoice(event) {
@@ -118,6 +122,7 @@ customElements.define(
 			this.houseChoiceRender = "";
 			setTimeout(() => {
 				this.triangleRevealState = "";
+				this.disableClick = false;
 			}, 500);
 		}
 
@@ -159,7 +164,7 @@ customElements.define(
 				.choice-prompt {
 					position: relative;
 					width: 100%;
-					max-width: 30rem;
+					max-width: 20rem;
 					margin: 6.25rem auto 0 auto;
 					overflow: hidden;
 				}
