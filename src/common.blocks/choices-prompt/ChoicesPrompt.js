@@ -11,7 +11,6 @@ customElements.define(
 	class ChoicesPrompt extends LitElement {
 		static get properties() {
 			return {
-				choicePromptHeight: { type: String },
 				playerChoice: { type: String },
 				houseChoice: { type: String },
 				houseChoiceRender: { type: String },
@@ -140,14 +139,14 @@ customElements.define(
 
 			if (difference > 0 && difference !== 2) {
 				this.dispatchEvent(increaseEvent);
-				return "Player Won";
+				return "YOU WIN";
 			} else if (difference === -2) {
 				this.dispatchEvent(increaseEvent);
-				return "Player Won";
+				return "YOU WIN";
 			} else if (difference === 0) {
-				return "Draw";
+				return "DRAW";
 			} else {
-				return "Player Lost";
+				return "YOU LOSE";
 			}
 		}
 
@@ -160,13 +159,10 @@ customElements.define(
 					margin: 6.25rem auto 0 auto;
 					overflow: hidden;
 				}
-				.choice-prompt_eq-triangle::before {
+				.choice-prompt::before {
 					content: "";
 					float: left;
 					padding-top: ${equilateralTriangleHeight}%;
-				}
-				.choice-prompt_smaller-height {
-					height: 13rem;
 				}
 				.choice-button {
 					transition: 0.5s;
@@ -264,7 +260,7 @@ customElements.define(
 
 		render() {
 			return html`
-				<div class="choice-prompt ${this.choicePromptHeight}">
+				<div class="choice-prompt">
 					<choice-button
 						class="choice-button ${this.choices.paper
 							.position} ${this.choices.paper.state}"
@@ -322,8 +318,8 @@ customElements.define(
 				</div>
 				<outcome-display
 					outcome="${this.gameOutcome}"
+					@reset-game="${this.resetChoices}"
 				></outcome-display>
-				<button @click="${this.resetChoices}">Reset</button>
 			`;
 		}
 	}
