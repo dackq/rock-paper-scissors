@@ -20,7 +20,8 @@ customElements.define(
 				triangleRevealState: { type: String },
 				houseChoiceBlockRevealState: { type: String },
 				houseChoiceRevealState: { type: String },
-				disableClick: { type: Boolean }
+				disableClick: { type: Boolean },
+				gameOutcome: { type: String }
 			};
 		}
 
@@ -118,8 +119,8 @@ customElements.define(
 			this.choices = newChoices;
 			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
-			this.dispatchOutcomeChangedEvent("");
 			this.houseChoiceRender = "";
+			this.gameOutcome = "";
 			setTimeout(() => {
 				this.triangleRevealState = "";
 				this.disableClick = false;
@@ -139,24 +140,15 @@ customElements.define(
 
 			if (difference > 0 && difference !== 2) {
 				this.dispatchEvent(increaseEvent);
-				this.dispatchOutcomeChangedEvent("Player Won");
+				return "Player Won";
 			} else if (difference === -2) {
 				this.dispatchEvent(increaseEvent);
-				this.dispatchOutcomeChangedEvent("Player Won");
+				return "Player Won";
 			} else if (difference === 0) {
-				this.dispatchOutcomeChangedEvent("Draw");
+				return "Draw";
 			} else {
-				this.dispatchOutcomeChangedEvent("Player Lost");
+				return "Player Lost";
 			}
-		}
-
-		dispatchOutcomeChangedEvent(outcome) {
-			let event = new CustomEvent("outcome-changed", {
-				detail: {
-					outcome
-				}
-			});
-			this.dispatchEvent(event);
 		}
 
 		static get styles() {
@@ -328,6 +320,9 @@ customElements.define(
 							.triangleRevealState}"
 					></div>
 				</div>
+				<outcome-display
+					outcome="${this.gameOutcome}"
+				></outcome-display>
 				<button @click="${this.resetChoices}">Reset</button>
 			`;
 		}

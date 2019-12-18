@@ -5,15 +5,13 @@ customElements.define(
 	class AppRoot extends LitElement {
 		static get properties() {
 			return {
-				score: { type: Number },
-				gameOutcome: { type: String }
+				score: { type: Number }
 			};
 		}
 
 		constructor() {
 			super();
 			this.score = 0;
-			this.gameOutcome = "";
 		}
 
 		resetScore() {
@@ -22,10 +20,6 @@ customElements.define(
 
 		increaseScore() {
 			this.score += 1;
-		}
-
-		changeOutcome(event) {
-			this.gameOutcome = event.detail.outcome;
 		}
 
 		static get styles() {
@@ -48,11 +42,7 @@ customElements.define(
 					<title-box score="${this.score}"></title-box>
 					<choices-prompt
 						@score-increased="${this.increaseScore}"
-						@outcome-changed="${this.changeOutcome}"
 					></choices-prompt>
-					<outcome-display
-						outcome="${this.gameOutcome}"
-					></outcome-display>
 					<rules-modal></rules-modal>
 				</div>
 			`;
