@@ -47,8 +47,8 @@ class RulesModal extends LitElement {
 			}
 			.button {
 				display: block;
-				padding: 0.5rem 2.2rem;
-				margin: auto;
+				padding: 0.65rem 2.2rem;
+				margin: 0.5rem auto;
 				background-color: transparent;
 				cursor: pointer;
 			}

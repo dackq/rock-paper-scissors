@@ -32,6 +32,7 @@ customElements.define(
 					margin: 0 auto;
 					padding: 1.9rem;
 					height: 100vh;
+					overflow: hidden;
 				}
 			`;
 		}

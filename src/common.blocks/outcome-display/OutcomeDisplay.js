@@ -6,21 +6,25 @@ customElements.define(
 		static get properties() {
 			return {
 				outcome: { type: String },
-				hidden: { type: String }
+				hidden: { type: String },
+				button: { type: String }
 			};
 		}
 
 		constructor() {
 			super();
 			this.hidden = "hidden";
+			this.button = "";
 		}
 
 		attributeChangedCallback(name, oldVal, newVal) {
 			if (name === "outcome") {
 				if (newVal !== "") {
 					this.hidden = "";
+					this.button = "outcome__button";
 				} else {
 					this.hidden = "hidden";
+					this.button = "";
 				}
 			}
 			super.attributeChangedCallback(name, oldVal, newVal);
@@ -33,11 +37,26 @@ customElements.define(
 		static get styles() {
 			return css`
 				.outcome {
-					height: 6rem;
+					margin-top: -1.5rem;
+					height: 10rem;
+					transition: 0.5s;
 				}
 				.outcome__label {
 					text-align: center;
 					color: white;
+					font-size: 3.4rem;
+					margin: 0;
+				}
+				.outcome__button {
+					display: block;
+					margin: 1.1rem auto;
+					padding: 1rem 3rem;
+					background-color: white;
+					border-radius: 8px;
+					color: #16243e;
+					font-size: 1rem;
+					font-weight: 600;
+					letter-spacing: 2px;
 				}
 				.hidden {
 					opacity: 0;
@@ -46,15 +65,15 @@ customElements.define(
 		}
 		render() {
 			return html`
-				<div class="outcome">
+				<div class="outcome  ${this.hidden}">
 					<h2 class="outcome__label">
 						${this.outcome}
 					</h2>
 					<button
-						class="${this.hidden}"
+						class="${this.button}"
 						@click="${this.dispatchReset}"
 					>
-						Reset
+						PLAY AGAIN
 					</button>
 				</div>
 			`;
