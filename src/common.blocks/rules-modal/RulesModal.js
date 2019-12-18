@@ -66,6 +66,12 @@ class RulesModal extends LitElement {
 			.button_close {
 				border: none;
 			}
+			.image {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
 		`;
 	}
 
@@ -75,6 +81,7 @@ class RulesModal extends LitElement {
 				<div class="rules__content">
 					<h2>RULES</h2>
 					<img
+						class="image"
 						src="${rulesImage}"
 						alt="Rock beats scissors. Scissors beats paper. Paper beats rock."
 					/>

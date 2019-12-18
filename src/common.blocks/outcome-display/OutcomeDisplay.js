@@ -70,7 +70,7 @@ customElements.define(
 						${this.outcome}
 					</h2>
 					<button
-						class="${this.button}"
+						class="${this.button} ${this.hidden}"
 						@click="${this.dispatchReset}"
 					>
 						PLAY AGAIN

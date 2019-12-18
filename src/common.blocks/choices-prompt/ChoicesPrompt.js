@@ -58,7 +58,6 @@ customElements.define(
 				this.registerPlayerChoice(event);
 				this.registerHouseChoice();
 				this.closeChoices();
-				this.choicePromptHeight = "choice-prompt_smaller-height";
 				this.revealHouseChoiceBlock();
 				setTimeout(() => {
 					this.revealHouseChoice();
@@ -226,7 +225,6 @@ customElements.define(
 					height: 8.125rem;
 					z-index: 0;
 					border-radius: 50%;
-					transition: 1s;
 					position: absolute;
 					top: 0;
 					right: 0;
@@ -237,14 +235,12 @@ customElements.define(
 					z-index: 0;
 					background-color: #16243e;
 					border-radius: 50%;
-					transition: 0.5s;
 					position: absolute;
 					top: 0.9375rem;
 					right: 0.9375rem;
 				}
 				.label {
 					color: white;
-					transition: 1s;
 					font-size: 1.1rem;
 					position: absolute;
 					top: 9rem;
