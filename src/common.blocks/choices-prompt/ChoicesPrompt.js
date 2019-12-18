@@ -4,17 +4,19 @@ import paper from "../../img/icon-paper.svg";
 import rock from "../../img/icon-rock.svg";
 
 // height of an equilateral triangle sqrt(3)/2 * side length
-const elementHeight = 100 * (Math.sqrt(3) / 2);
+const equilateralTriangleHeight = 100 * (Math.sqrt(3) / 2);
 
 customElements.define(
 	"choices-prompt",
 	class ChoicesPrompt extends LitElement {
 		static get properties() {
 			return {
+				choicePromptHeight: { type: String },
 				playerChoice: { type: String },
 				houseChoice: { type: String },
 				houseChoiceRender: { type: String },
 				choices: { type: Object },
+				images: { type: Object },
 				triangleRevealState: { type: String },
 				houseChoiceBlockRevealState: { type: String },
 				houseChoiceRevealState: { type: String }
@@ -26,20 +28,23 @@ customElements.define(
 			this.choices = {
 				paper: {
 					state: "",
-					position: "paper",
-					image: paper
+					position: "paper"
 				},
 				rock: {
 					state: "",
-					position: "rock",
-					image: rock
+					position: "rock"
 				},
 				scissors: {
 					state: "",
-					position: "scissors",
-					image: scissors
+					position: "scissors"
 				}
 			};
+			this.images = {
+				paper,
+				rock,
+				scissors
+			};
+			this.choicePromptHeight = "choice-prompt_eq-triangle";
 			this.triangleRevealState = "";
 			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
@@ -50,15 +55,14 @@ customElements.define(
 			this.registerPlayerChoice(event);
 			this.registerHouseChoice();
 			this.closeChoices();
+			this.choicePromptHeight = "choice-prompt_smaller-height";
+			this.revealHouseChoiceBlock();
 			setTimeout(() => {
-				this.revealHouseChoiceBlock();
+				this.revealHouseChoice();
 				setTimeout(() => {
-					this.revealHouseChoice();
-					setTimeout(() => {
-						this.gameOutcome = this.judgeWinner();
-					}, 500);
-				}, 700);
-			}, 350);
+					this.gameOutcome = this.judgeWinner();
+				}, 500);
+			}, 700);
 		}
 
 		registerPlayerChoice(event) {
@@ -74,7 +78,7 @@ customElements.define(
 				<choice-button
 					class="choice-button"
 					data-shape="${choice}"
-					picture="${this.choices[choice].image}"
+					picture="${this.images[choice]}"
 				></choice-button>
 			`;
 		}
@@ -106,10 +110,15 @@ customElements.define(
 				newChoices[choice].state = "";
 				newChoices[choice].position = `${choice}`;
 			}
+			this.choicePromptHeight = "choice-prompt_eq-triangle";
 			this.choices = newChoices;
 			this.houseChoiceBlockRevealState = "hidden";
 			this.houseChoiceRevealState = "hidden";
-			this.triangleRevealState = "";
+			this.dispatchOutcomeChangedEvent("");
+			this.houseChoiceRender = "";
+			setTimeout(() => {
+				this.triangleRevealState = "";
+			}, 500);
 		}
 
 		judgeWinner() {
@@ -154,10 +163,13 @@ customElements.define(
 					margin: 6.25rem auto 0 auto;
 					overflow: hidden;
 				}
-				.choice-prompt::before {
+				.choice-prompt_eq-triangle::before {
 					content: "";
 					float: left;
-					padding-top: ${elementHeight}%;
+					padding-top: ${equilateralTriangleHeight}%;
+				}
+				.choice-prompt_smaller-height {
+					height: 13rem;
 				}
 				.choice-button {
 					transition: 0.5s;
@@ -197,6 +209,7 @@ customElements.define(
 					height: 0.9375rem;
 					width: 100%;
 					background-color: #16243e;
+					transition: 0.3s;
 				}
 				.choice-button__connection_top {
 					position: absolute;
@@ -220,7 +233,7 @@ customElements.define(
 					height: 8.125rem;
 					z-index: 0;
 					border-radius: 50%;
-					transition: 0.5s;
+					transition: 1s;
 					position: absolute;
 					top: 0;
 					right: 0;
@@ -236,19 +249,25 @@ customElements.define(
 					top: 0.9375rem;
 					right: 0.9375rem;
 				}
-				.house__label {
-					position: absolute;
-					right: 0.75rem;
-					top: 7rem;
+				.label {
 					color: white;
-					transition: 0.5s;
+					transition: 1s;
+					font-size: 1.1rem;
+					position: absolute;
+					top: 9rem;
+				}
+				.label_house {
+					right: 0;
+				}
+				.label_player {
+					left: 1.5rem;
 				}
 			`;
 		}
 
 		render() {
 			return html`
-				<div class="choice-prompt">
+				<div class="choice-prompt ${this.choicePromptHeight}">
 					<choice-button
 						class="choice-button ${this.choices.paper
 							.position} ${this.choices.paper.state}"
@@ -256,6 +275,12 @@ customElements.define(
 						data-shape="paper"
 						picture="${paper}"
 					></choice-button>
+					<p
+						class="label label_player ${this
+							.houseChoiceBlockRevealState}"
+					>
+						YOU PICKED
+					</p>
 					<div
 						class="choice-button__connection choice-button__connection_top ${this
 							.triangleRevealState}"
@@ -287,8 +312,11 @@ customElements.define(
 							${this.houseChoiceRender}
 						</div>
 					</div>
-					<p class="house__label ${this.houseChoiceBlockRevealState}">
-						The House Picked
+					<p
+						class="label label_house ${this
+							.houseChoiceBlockRevealState}"
+					>
+						THE HOUSE PICKED
 					</p>
 					<div
 						class="choice-button__connection choice-button__connection_right ${this
