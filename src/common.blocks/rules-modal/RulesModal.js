@@ -35,7 +35,7 @@ class RulesModal extends LitElement {
 				left: 0;
 				height: 100%;
 				width: 100%;
-				transition: height 0.5s;
+				transition: opacity, height 0.5s, 0.5s;
 				text-align: center;
 				z-index: 20;
 			}
@@ -44,6 +44,7 @@ class RulesModal extends LitElement {
 			}
 			.rules_hidden {
 				height: 0;
+				opacity: 0;
 			}
 			.button {
 				display: block;
@@ -78,6 +79,32 @@ class RulesModal extends LitElement {
 					bottom: 1rem;
 					right: 1rem;
 				}
+				.button_close {
+					position: absolute;
+					top: 0.5rem;
+					right: 0;
+				}
+				.rules {
+					width: 25rem;
+					height: 25rem;
+					position: absolute;
+					text-align: left;
+					bottom: 50%;
+					left: 50%;
+					transform: translate(-50%, 50%);
+					border-radius: 5px;
+				}
+				.rules_title {
+					margin: 1rem 2.5rem;
+					font-size: 2rem;
+				}
+				.rules_hidden {
+					opacity: 0;
+					visibility: hidden;
+				}
+				.image {
+					top: 60%;
+				}
 			}
 		`;
 	}
@@ -86,7 +113,7 @@ class RulesModal extends LitElement {
 		return html`
 			<div class="rules${this.modalVisibility}">
 				<div class="rules__content">
-					<h2>RULES</h2>
+					<h2 class="rules_title">RULES</h2>
 					<img
 						class="image"
 						src="${rulesImage}"
