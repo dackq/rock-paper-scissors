@@ -52,6 +52,7 @@ customElements.define(
 					margin: 1.1rem auto;
 					padding: 1rem 3rem;
 					background-color: white;
+					border: none;
 					border-radius: 8px;
 					color: #16243e;
 					font-size: 1rem;
