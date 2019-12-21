@@ -31,7 +31,7 @@ customElements.define(
 					max-width: 43.75rem;
 					margin: 0 auto;
 					padding: 1.9rem;
-					height: 100vh;
+					height: 100%;
 				}
 			`;
 		}

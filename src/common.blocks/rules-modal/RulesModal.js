@@ -33,14 +33,14 @@ class RulesModal extends LitElement {
 				overflow: hidden;
 				bottom: 0;
 				left: 0;
-				height: 100vh;
+				height: 100%;
 				width: 100%;
 				transition: height 0.5s;
 				text-align: center;
 				z-index: 20;
 			}
 			.rules__content {
-				height: 85vh;
+				height: 85%;
 			}
 			.rules_hidden {
 				height: 0;
@@ -73,7 +73,7 @@ class RulesModal extends LitElement {
 				transform: translate(-50%, -50%);
 			}
 			@media screen and (min-width: 1024px) {
-				.button {
+				.button_rules {
 					position: absolute;
 					bottom: 1rem;
 					right: 1rem;
