@@ -72,6 +72,13 @@ class RulesModal extends LitElement {
 				left: 50%;
 				transform: translate(-50%, -50%);
 			}
+			@media screen and (min-width: 1024px) {
+				.button {
+					position: absolute;
+					bottom: 1rem;
+					right: 1rem;
+				}
+			}
 		`;
 	}
 

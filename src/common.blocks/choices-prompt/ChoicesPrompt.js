@@ -155,7 +155,7 @@ customElements.define(
 					position: relative;
 					width: 100%;
 					max-width: 20rem;
-					margin: 6.25rem auto 0 auto;
+					margin: 8vh auto 0 auto;
 					overflow: hidden;
 				}
 				.choice-prompt::before {
@@ -250,6 +250,11 @@ customElements.define(
 				}
 				.label_player {
 					left: 1.5rem;
+				}
+				@media screen and (min-height: 700px) {
+					.choice-prompt {
+						margin-top: 13.333333vh;
+					}
 				}
 			`;
 		}

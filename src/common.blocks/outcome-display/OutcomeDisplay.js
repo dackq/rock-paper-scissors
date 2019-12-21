@@ -37,7 +37,7 @@ customElements.define(
 		static get styles() {
 			return css`
 				.outcome {
-					margin-top: -1.5rem;
+					margin-top: -5rem;
 					height: 10rem;
 					transition: 0.5s;
 				}
@@ -60,6 +60,11 @@ customElements.define(
 				}
 				.hidden {
 					opacity: 0;
+				}
+				@media screen and (min-height: 700px) {
+					.outcome {
+						margin-top: -1.5rem;
+					}
 				}
 			`;
 		}
